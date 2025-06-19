@@ -44,11 +44,11 @@ export default function App() {
     setIsEmpty(false);
 
     try {
-      const { results, total_pages } = await searchRequest(
+      const { results, totalPages } = await searchRequest(
         searchQuery,
         pageNumber
       );
-      setTotalPages(total_pages);
+      setTotalPages(totalPages);
 
       if (results.length === 0) {
         setIsEmpty(true);
