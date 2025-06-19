@@ -1,13 +1,21 @@
 import css from "./SearchBar.module.css";
-import { Formik, Field, Form } from "formik";
+import { Formik, Field, Form, FormikHelpers } from "formik";
 import { FiSearch } from "react-icons/fi";
 
-export default function SearchBar({ onSearch }) {
+interface SearchBarProps {
+  onSearch: (query: string) => void;
+}
+
+interface FormValues {
+  topic: string;
+}
+
+export default function SearchBar({ onSearch }: SearchBarProps) {
   return (
     <header className={css.header}>
       <Formik
         initialValues={{ topic: "" }}
-        onSubmit={(values, actions) => {
+        onSubmit={(values: FormValues, actions: FormikHelpers<FormValues>) => {
           onSearch(values.topic);
           actions.resetForm();
         }}
