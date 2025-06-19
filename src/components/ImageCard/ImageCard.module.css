@@ -1,0 +1,26 @@
+.image {
+  width: 400px;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card {
+  position: relative;
+  display: inline-block;
+}
+
+.magnifierIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.card:hover .magnifierIcon {
+  opacity: 1;
+}
