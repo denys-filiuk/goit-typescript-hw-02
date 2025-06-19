@@ -1,3 +1,7 @@
-export default function ErrorMessage() {
-  return <strong>Oops, something went wrong...</strong>;
+interface ErrorMessageProps {
+  message: string;
+}
+
+export default function ErrorMessage({ message }: ErrorMessageProps) {
+  return <strong>{message}</strong>;
 }

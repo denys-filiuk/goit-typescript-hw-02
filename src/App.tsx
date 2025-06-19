@@ -1,26 +1,29 @@
 import "./App.css";
+import { useState, useEffect, useRef } from "react";
 import SearchBar from "./components/SearchBar/SearchBar";
 import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
-import { useState, useEffect, useRef } from "react";
-import searchRequest from "./api";
 import ImageModal from "./components/ImageModal/ImageModal";
+import searchRequest from "./api";
+import { UnsplashImage } from "./types";
 
 export default function App() {
-  const [imageCards, setImageCards] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [isEmpty, setIsEmpty] = useState(false);
-  const [page, setPage] = useState(1);
-  const [query, setQuery] = useState("");
-  const [totalPages, setTotalPages] = useState(1);
-  const galleryRef = useRef(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageCards, setImageCards] = useState<UnsplashImage[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [query, setQuery] = useState<string>("");
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const galleryRef = useRef<HTMLDivElement | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<UnsplashImage | null>(
+    null
+  );
 
-  const openModal = (image) => {
+  const openModal = (image: UnsplashImage) => {
     setSelectedImage(image);
     setIsModalOpen(true);
   };
@@ -30,7 +33,10 @@ export default function App() {
     setIsModalOpen(false);
   };
 
-  const loadImages = async (searchQuery, pageNumber) => {
+  const loadImages = async (
+    searchQuery: string,
+    pageNumber: number
+  ): Promise<void> => {
     if (searchQuery.trim() === "") return;
 
     setIsLoading(true);
@@ -38,11 +44,11 @@ export default function App() {
     setIsEmpty(false);
 
     try {
-      const { results, totalPages } = await searchRequest(
+      const { results, total_pages } = await searchRequest(
         searchQuery,
         pageNumber
       );
-      setTotalPages(totalPages);
+      setTotalPages(total_pages);
 
       if (results.length === 0) {
         setIsEmpty(true);
@@ -74,17 +80,17 @@ export default function App() {
     }
   }, [imageCards]);
 
-  const handleSearch = (newTopic) => {
+  const handleSearch = (newTopic: string): void => {
     setQuery(newTopic);
     setPage(1);
     setImageCards([]);
   };
 
-  const handleLoadMore = () => {
+  const handleLoadMore = (): void => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  const shouldShowLoadMore =
+  const shouldShowLoadMore: boolean =
     imageCards.length > 0 && page < totalPages && !isLoading;
 
   return (
